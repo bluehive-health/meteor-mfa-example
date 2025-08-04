@@ -1,11 +1,37 @@
 {
-  "name": "meteor-app",
+  "name": "meteor-mfa-example",
+  "version": "1.0.0",
+  "description": "A modern, secure authentication application built with Meteor and React that demonstrates comprehensive two-factor authentication (2FA) implementation using authenticator apps.",
   "private": true,
   "scripts": {
     "start": "meteor run",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluehive-health/meteor-mfa-example.git"
+  },
+  "keywords": [
+    "meteor",
+    "react",
+    "2fa",
+    "two-factor-authentication",
+    "totp",
+    "authentication",
+    "security",
+    "example"
+  ],
+  "author": "BlueHive Health",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bluehive-health/meteor-mfa-example/issues"
+  },
+  "homepage": "https://github.com/bluehive-health/meteor-mfa-example#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "meteor": ">=3.3.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.7",

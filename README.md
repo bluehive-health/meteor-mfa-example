@@ -16,8 +16,8 @@ A modern, secure authentication application built with Meteor and React that dem
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v22 or higher)
-- [Meteor](https://www.meteor.com/developers/install) (v3.3)
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Meteor](https://www.meteor.com/developers/install) (v3.3 or higher)
 
 ### Installation
 
@@ -118,7 +118,7 @@ Meteor.loginWithPasswordAnd2faCode(username, password, code, (error) => {
 ### Project Structure
 
 ```
-meteor-mfa/
+meteor-mfa-example/
 ├── client/
 │   ├── main.jsx          # Client entry point
 │   ├── main.html         # HTML template

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Accounts } from 'meteor/accounts-base';
 import { Buffer } from 'buffer';
+import { validateTwoFactorCode } from '../utils/validation';
 
 export const TwoFactorSetup = ({ onComplete, onCancel }) => {
   const [step, setStep] = useState('generate'); // 'generate' | 'verify'
@@ -32,8 +33,8 @@ export const TwoFactorSetup = ({ onComplete, onCancel }) => {
   };
 
   const verifyAndEnable2FA = () => {
-    if (!verificationCode || verificationCode.length !== 6) {
-      setError('Please enter a 6-digit verification code');
+    if (!validateTwoFactorCode(verificationCode)) {
+      setError('Please enter a valid 6-digit verification code');
       return;
     }
 

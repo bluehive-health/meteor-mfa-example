@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { validateTwoFactorCode } from '../utils/validation';
 
 export const TwoFactorLogin = ({ loginData, onSuccess, onCancel }) => {
   const [verificationCode, setVerificationCode] = useState('');
@@ -28,7 +29,7 @@ export const TwoFactorLogin = ({ loginData, onSuccess, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (!verificationCode || verificationCode.length !== 6) {
+    if (!validateTwoFactorCode(verificationCode)) {
       setError('Please enter a complete 6-digit code');
       return;
     }

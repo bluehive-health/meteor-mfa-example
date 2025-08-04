@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { sanitizeInput } from '../utils/validation';
 
 export const LoginForm = ({ onSuccess, onNeed2FA, onSwitchToSignup }) => {
   const [formData, setFormData] = useState({
@@ -11,9 +12,10 @@ export const LoginForm = ({ onSuccess, onNeed2FA, onSwitchToSignup }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const sanitizedValue = name === 'password' ? value : sanitizeInput(value);
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: sanitizedValue
     }));
     setError(''); // Clear error when user types
   };
