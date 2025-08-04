@@ -16,15 +16,15 @@ A modern, secure authentication application built with Meteor and React that dem
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v14 or higher)
+- [Node.js](https://nodejs.org/) (v22 or higher)
 - [Meteor](https://www.meteor.com/developers/install) (v3.3)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd meteor-mfa
+   git clone https://github.com/bluehive-health/meteor-mfa-example
+   cd meteor-mfa-example
    ```
 
 2. **Install dependencies**
