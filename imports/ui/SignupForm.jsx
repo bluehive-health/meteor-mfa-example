@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Accounts } from 'meteor/accounts-base';
+import { sanitizeInput, validateEmail, validateUsername, validatePassword } from '../utils/validation';
 
 export const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
@@ -13,9 +14,10 @@ export const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const sanitizedValue = sanitizeInput(value);
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: sanitizedValue
     }));
     setError(''); // Clear error when user types
   };
@@ -27,17 +29,15 @@ export const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
       return 'Please fill in all fields';
     }
 
-    if (username.length < 3) {
-      return 'Username must be at least 3 characters long';
+    if (!validateUsername(username)) {
+      return 'Username must be 3-30 characters and contain only letters, numbers, and underscores';
     }
 
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!validateEmail(email)) {
       return 'Please enter a valid email address';
     }
 
-    if (password.length < 6) {
+    if (!validatePassword(password)) {
       return 'Password must be at least 6 characters long';
     }
 

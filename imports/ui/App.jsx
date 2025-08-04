@@ -76,8 +76,6 @@ export const App = () => {
               Meteor.logout((error) => {
                 if (error) {
                   console.error('Logout error:', error);
-                } else {
-                  console.log('Successfully logged out');
                 }
               });
             }}

@@ -22,20 +22,14 @@ export const Dashboard = ({ onSetup2FA, onLogout }) => {
     setLoading(true);
     setError('');
     
-    console.log('Checking 2FA status using Accounts.has2faEnabled method...');
-    
     // Use the official method for checking 2FA status
     Accounts.has2faEnabled((error, isEnabled) => {
-      console.log('Accounts.has2faEnabled result:', { error, isEnabled });
-      
       if (error) {
-        console.error('Error checking 2FA status:', error);
         // In case of error, assume 2FA is disabled for safety
         setHas2FA(false);
         setError('Failed to check 2FA status');
       } else {
         // Clear and straightforward - isEnabled is a boolean
-        console.log('2FA status:', isEnabled ? 'ENABLED' : 'DISABLED');
         setHas2FA(isEnabled);
       }
       
