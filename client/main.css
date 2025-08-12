@@ -663,3 +663,171 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+
+/* Add this to the end of your existing main.css file */
+
+/* SweetAlert2 Custom Styling */
+.mfa-swal-container {
+  backdrop-filter: blur(10px);
+}
+
+.mfa-swal-popup {
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  max-width: 600px !important;
+}
+
+.mfa-swal-title {
+  color: #2d3748 !important;
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 1rem !important;
+}
+
+.mfa-swal-content {
+  color: #4a5568 !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+}
+
+.mfa-swal-input {
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  padding: 0.875rem 1rem !important;
+  font-size: 1rem !important;
+  background: #f8fafc !important;
+  transition: all 0.2s ease !important;
+  margin: 1rem 0 !important;
+}
+
+.mfa-swal-input:focus {
+  outline: none !important;
+  border-color: #667eea !important;
+  background: white !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Ensure SweetAlert buttons use our custom styles */
+.swal2-confirm.auth-button.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.875rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  margin: 0.5rem !important;
+}
+
+.swal2-confirm.auth-button.primary:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3) !important;
+}
+
+.swal2-cancel.auth-button.secondary,
+.swal2-deny.auth-button.secondary {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  padding: 0.875rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  margin: 0.5rem !important;
+}
+
+.swal2-cancel.auth-button.secondary:hover,
+.swal2-deny.auth-button.secondary:hover {
+  background: #e2e8f0 !important;
+}
+
+.swal2-deny.auth-button.danger {
+  background: #ef4444 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.875rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  margin: 0.5rem !important;
+}
+
+.swal2-deny.auth-button.danger:hover {
+  background: #dc2626 !important;
+}
+
+/* Animation for SweetAlert */
+.swal2-popup.swal2-show {
+  animation: swalSlideUp 0.3s ease-out !important;
+}
+
+@keyframes swalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* QR Code container styling in SweetAlert */
+.swal2-html-container img {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Timer styling in SweetAlert */
+#timer {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+/* Make SweetAlert responsive */
+@media (max-width: 640px) {
+  .mfa-swal-popup {
+    margin: 1rem !important;
+    max-width: calc(100vw - 2rem) !important;
+    padding: 1.5rem !important;
+  }
+  
+  .mfa-swal-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .mfa-swal-input {
+    font-size: 1.5rem !important;
+    padding: 1rem !important;
+  }
+}
+
+.google-button {
+  border: 2px solid #e2e8f0 !important;
+  background: white !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.google-button:hover:not(:disabled) {
+  border-color: #d1d5db !important;
+  background: #f9fafb !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.google-button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Accounts } from 'meteor/accounts-base';
+import { useNavigate, Link } from 'react-router-dom';
 
-export const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
+export const SignupForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -73,7 +75,7 @@ export const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
         setError(error.reason || 'Registration failed. Please try again.');
       } else {
         // Successful registration and auto-login
-        onSuccess();
+        navigate('/dashboard');
       }
     });
   };
@@ -166,13 +168,9 @@ export const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
         <div className="auth-links">
           <p>
             Already have an account?{' '}
-            <button 
-              type="button" 
-              className="link-button"
-              onClick={onSwitchToLogin}
-            >
+            <Link to="/login" className="link-button">
               Login here
-            </button>
+            </Link>
           </p>
         </div>
       </div>

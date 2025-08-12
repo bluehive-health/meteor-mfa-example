@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { useTracker } from 'meteor/react-meteor-data';
+import { useNavigate } from 'react-router-dom';
+import { MFAUtils } from './MFAUtils.js';
 
-export const Dashboard = ({ onSetup2FA, onLogout }) => {
+export const Dashboard = () => {
+  const navigate = useNavigate();
   const [has2FA, setHas2FA] = useState(false);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
@@ -54,21 +57,37 @@ export const Dashboard = ({ onSetup2FA, onLogout }) => {
     checkTwoFactorStatus();
   };
 
-  const handleDisable2FA = () => {
-    if (!confirm('Are you sure you want to disable two-factor authentication? This will make your account less secure.')) {
-      return;
-    }
-
+  const handleEnable2FA = async () => {
     setActionLoading(true);
     setError('');
     setSuccess('');
 
-    Accounts.disableUser2fa((error) => {
+    try {
+      const success = await MFAUtils.show2FASetup();
+      if (success) {
+        setSuccess('Two-factor authentication has been enabled');
+        setHas2FA(true);
+        // Refresh status after enabling
+        setTimeout(() => {
+          checkTwoFactorStatus();
+        }, 500);
+      }
+    } catch (error) {
+      console.error('Error enabling 2FA:', error);
+      setError('Failed to enable 2FA. Please try again.');
+    } finally {
       setActionLoading(false);
-      
-      if (error) {
-        setError(error.reason || 'Failed to disable 2FA');
-      } else {
+    }
+  };
+
+  const handleDisable2FA = async () => {
+    setActionLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const success = await MFAUtils.disable2FA();
+      if (success) {
         setSuccess('Two-factor authentication has been disabled');
         setHas2FA(false);
         // Refresh status after disabling
@@ -76,7 +95,12 @@ export const Dashboard = ({ onSetup2FA, onLogout }) => {
           checkTwoFactorStatus();
         }, 500);
       }
-    });
+    } catch (error) {
+      console.error('Error disabling 2FA:', error);
+      setError('Failed to disable 2FA. Please try again.');
+    } finally {
+      setActionLoading(false);
+    }
   };
 
   const handleLogout = () => {
@@ -89,11 +113,7 @@ export const Dashboard = ({ onSetup2FA, onLogout }) => {
           console.error('Logout error:', error);
           setError('Failed to logout. Please try again.');
         } else {
-          setHas2FA(false);
-          setError('');
-          setSuccess('');
-          setActionLoading(false);
-          onLogout();
+          navigate('/login');
         }
       });
     }
@@ -144,8 +164,6 @@ export const Dashboard = ({ onSetup2FA, onLogout }) => {
             </button>
           </div>
         </div>
-
-       
 
         {/* User Information */}
         <div className="info-section">
@@ -212,9 +230,17 @@ export const Dashboard = ({ onSetup2FA, onLogout }) => {
                 ) : (
                   <button 
                     className="auth-button primary"
-                    onClick={onSetup2FA}
+                    onClick={handleEnable2FA}
+                    disabled={actionLoading}
                   >
-                    Enable 2FA
+                    {actionLoading ? (
+                      <>
+                        <span className="spinner"></span>
+                        Setting up...
+                      </>
+                    ) : (
+                      'Enable 2FA'
+                    )}
                   </button>
                 )}
               </div>
