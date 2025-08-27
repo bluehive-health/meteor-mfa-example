@@ -342,39 +342,23 @@ Template.dashboard.events({
   'click .logout-btn'(event) {
     event.preventDefault();
     
-    Swal.fire({
-      title: 'Logout',
-      text: 'Are you sure you want to log out?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, Logout',
-      cancelButtonText: 'Cancel',
-      customClass: {
-        popup: 'mfa-swal-popup',
-        title: 'mfa-swal-title',
-        content: 'mfa-swal-content',
-        confirmButton: 'auth-button primary',
-        cancelButton: 'auth-button secondary'
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Meteor.logout((error) => {
-          if (error) {
-            console.error('Logout error:', error);
-            Swal.fire({
-              title: 'Error',
-              text: 'Failed to logout. Please try again.',
-              icon: 'error',
-              customClass: {
-                popup: 'mfa-swal-popup',
-                title: 'mfa-swal-title',
-                content: 'mfa-swal-content'
-              }
-            });
-          } else {
-            FlowRouter.go('/login');
+    // Direct logout without SweetAlert confirmation
+    Meteor.logout((error) => {
+      if (error) {
+        console.error('Logout error:', error);
+        // Still show error alert if logout fails
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to logout. Please try again.',
+          icon: 'error',
+          customClass: {
+            popup: 'mfa-swal-popup',
+            title: 'mfa-swal-title',
+            content: 'mfa-swal-content'
           }
         });
+      } else {
+        FlowRouter.go('/login');
       }
     });
   }
