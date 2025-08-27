@@ -1,13 +1,10 @@
-// client/templates/login.js
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Meteor } from 'meteor/meteor';
+import Swal from 'sweetalert2';
 
 import './login.html';
-
-
-
 
 // Reactive variables for managing state
 const showTwoFactorInput = new ReactiveVar(false);
@@ -39,48 +36,78 @@ Template.login.helpers({
   }
 });
 
-Template.login.events({
+// Reusable function for 2FA prompts
+function prompt2FA(credentialToken, serviceName = 'OAuth') {
+  return Swal.fire({
+    title: 'Enter 2FA Code',
+    text: `Your ${serviceName} account has 2FA enabled`,
+    input: 'text',
+    inputPlaceholder: '000000',
+    inputAttributes: {
+      maxlength: 6,
+      style: 'text-align: center; font-size: 1.5rem; font-weight: 600; letter-spacing: 0.5em; font-family: monospace;'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Login',
+    inputValidator: (value) => {
+      if (!value || !/^\d{6}$/.test(value)) {
+        return 'Please enter a valid 6-digit code';
+      }
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Meteor.loginWithExternalServiceAnd2fa(credentialToken, result.value, (err) => {
+        if (err) {
+          console.log('2FA login error:', err);
+          errorMessage.set('2FA login failed. Please try again.');
+        } else {
+          console.log('2FA login successful');
+        }
+      });
+    }
+  });
+}
 
-    'click .facebook-button'(event) {
+Template.login.events({
+  'click .facebook-button'(event) {
     event.preventDefault();
-    // Handle Facebook login
-     Meteor.loginWithFacebook({
-            requestPermissions: ['email', 'public_profile'],
-            loginStyle: 'popup'
-        }, (error, result) => {
-            if (error) {
-                console.log('Facebook login error:', error);
-                errorMessage.set('Facebook login failed. Please try again.');
-            } else {
-                console.log('Facebook login successful');
-            }
-        });
+    
+    Meteor.loginWithFacebook({
+      requestPermissions: ['email', 'public_profile'],
+      loginStyle: 'popup'
+    }, (error) => {
+      if (error) {
+        console.log('Facebook login error:', error);
+        
+        if (error.error === "[2fa enabled]") {
+          prompt2FA(error.details.credentialToken, 'Facebook');
+        } else {
+          errorMessage.set('Facebook login failed. Please try again.');
+        }
+      } else {
+        console.log('Facebook login successful');
+      }
+    });
   },
+
   'click .google-button'(event) {
     event.preventDefault();
-    // Handle Google login
+    
     Meteor.loginWithGoogle((error) => {
       if (error) {
         console.log('Google login error:', error);
-        if(error.error === "[2fa enabled]"){
-          const a = prompt("Enter 2FA code");
-          
-          Meteor.loginWithExternalServiceAnd2fa(error.details.credentialToken, a, (err) => {
-            if (err) {
-              console.log('2FA login error:', err);
-              errorMessage.set('2FA login failed. Please try again.');
-            } else {
-              console.log('2FA login successful');
-            }
-          });
-
-
+        
+        if (error.error === "[2fa enabled]") {
+          prompt2FA(error.details.credentialToken, 'Google');
+        } else {
+          errorMessage.set('Google login failed. Please try again.');
         }
       } else {
         console.log('Google login successful');
       }
     });
   },
+
   'submit .login-form'(event) {
     event.preventDefault();
     
