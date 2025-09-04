@@ -92,6 +92,8 @@ Accounts.registerLoginHandler(async options => {
 });
 
 Accounts.registerLoginHandler('loginWithExternalServiceAnd2fa', async function(loginRequest) {
+
+if(loginRequest.credentialToken && loginRequest.otp && loginRequest.method === 'loginWithExternalServiceAnd2fa') {
   const { credentialToken, otp } = loginRequest;
 
   check(credentialToken, String);
@@ -148,6 +150,7 @@ Accounts.registerLoginHandler('loginWithExternalServiceAnd2fa', async function(l
     type: challengeData.serviceName,
     userId: userId 
   };
+}
 });
 
 ///

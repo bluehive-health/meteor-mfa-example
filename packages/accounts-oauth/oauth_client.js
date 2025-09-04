@@ -36,8 +36,6 @@ const convertError = err => {
 // storage.
 
 Meteor.startup(() => {
-
-  
   const oauth = OAuth.getDataAfterRedirect();
   if (! oauth)
     return;
@@ -118,7 +116,6 @@ Accounts.oauth.credentialRequestCompleteHandler = callback =>
       Accounts.oauth.tryLoginAfterPopupClosed(credentialTokenOrError, callback);
     }
   }
-
 if(Meteor.isClient){
     Meteor.loginWithExternalServiceAnd2fa = function (credentialToken, otp, callback) {
       Accounts.callLoginMethod({
